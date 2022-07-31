@@ -15,6 +15,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use('/api', router)
+
 app.get('/', (req, res) => {
     try{
         res.send('Hello!')

@@ -1,35 +1,12 @@
-const pg = require('pg');
+const { Client } = require('pg');
 require('dotenv').config();
 
-const Pool = pg.Pool
-
-const pool = new Pool({
-    user: process.env.PGUSER,
-    host: process.env.PGHOST,
-    password: process.env.PGPASSWORD,
-    port: process.env.PGPORT,
-    database: process.env.PGDATABASE,
-    ssl: true,
-});
-
-pool.connect();
-
-const tableMessages= ` 
- create TABLE messages(
-   id SERIAL PRIMARY KEY,
-   from VARCHAR(200),
-   text VARCHAR(200),
-   createdAt DATE,
-);
- `;
-
-
-pool.query(tableMessages, (err, res) => {
-    if (err) {
-        console.error(err);
-        return;
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
     }
-    console.log('Table is successfully created');
 });
 
-module.exports = pool
+client.connect();
+module.exports = client
