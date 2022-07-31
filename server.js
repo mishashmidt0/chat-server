@@ -16,7 +16,12 @@ app.use(cors())
 app.use(express.json())
 app.use('/api', router)
 app.get('/', (req, res) => {
-    res.send('Hello!')
+    try{
+        res.send('Hello!')
+    }catch (e) {
+        console.log(e)
+    }
+
 })
 
 app.listen(PORT, () => {
