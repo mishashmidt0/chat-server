@@ -3,10 +3,11 @@ const client = require('../bdPostgres/dataBase.js')
 
 class MessagesController {
     async createMessage(req, res) {
-        const {id, name, text, createdAt} = req.body
+        console.log(req.body)
+        const {idKey, name, text, date} = req.body
 
-        const newMessage = await client.query(`INSERT INTO messages (id, name, text, createdAt)
-        values ($1,$2,$3,$4) RETURNING *`, [id, name, text, createdAt])
+        const newMessage = await client.query(`INSERT INTO messages ( name, text, date, idKey)
+        values ($1,$2,$3,$4) RETURNING *`, [name, text, date,idKey])
         res.json(newMessage)
     }
 
