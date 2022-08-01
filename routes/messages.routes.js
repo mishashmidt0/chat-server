@@ -5,8 +5,6 @@ const messagesController = new MessagesController()
 const router = new Router()
 
 
-router.post('/messages/newMessage', messagesController.createMessage)
-
 router.get('/messages/all', messagesController.getMessages)
 
 module.exports = router

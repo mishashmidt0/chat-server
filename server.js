@@ -1,15 +1,17 @@
 const express = require('express');
 const router = require("./routes/messages.routes");
 const cors = require('cors')
-const { Server } = require("socket.io");
-const MessagesController = require("./controller/messages.controller.js");
+const {Server} = require("socket.io");
+
 const app = express()
 const http = require('http');
+const MessagesController = require("./controller/messages.controller");
+const messagesController = new MessagesController
 const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
 
 const io = new Server(server);
-const messagesController = new MessagesController()
+
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000/");
@@ -25,19 +27,18 @@ app.get('/', (req, res) => {
     res.send('Hello!')
 })
 
-io.on('connection', (socket) => {
+io.on('connection', (socket)=>{
     socket.on("NEW-MESSAGE:CLIENT", (data) => {
         socket.broadcast.emit("NEW-MESSAGE:SERVER", data)
 
-        messagesController.createMessage({body:data}).then((res)=>{
-            console.log("send")
+        messagesController.createMessage({body: data}).then((res) => {
+            console.log(res)
         })
     });
 });
 
 
-
-
 server.listen(PORT, () => {
     console.log("Server started")
 })
+
